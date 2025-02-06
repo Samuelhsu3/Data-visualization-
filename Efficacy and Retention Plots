@@ -1,0 +1,37 @@
+
+library(ggplot2)
+
+data <- data.frame(
+  Intervention = rep(c("CBT (DASS)", "GMT (CFQ)", "MBSR (MBS)"), each = 3),
+  Timepoint = rep(c("Follow-up", "Post", "Pre"), times = 3),
+  Score = c(21, 18, 27,   # CBT 
+            51, 52, 57,   # GMT 
+            19, 19, 20.5),   # MBS
+  SD = c(3, 2.5, 4,   
+         1.04, 1.02, 1.38,   
+         0.5, 0.5, 0.5)   
+)
+
+data$Timepoint <- factor(data$Timepoint, levels = c("Pre", "Post", "Follow-up"))
+
+interventions <- unique(data$Intervention)
+
+for (intervention in interventions) {
+  plot_data <- subset(data, Intervention == intervention)
+  
+  p <- ggplot(plot_data, aes(x = Timepoint, y = Score, group = Intervention, color = Intervention)) +
+    geom_line(size = 1) +
+    geom_point(size = 3) +         
+    geom_errorbar(aes(ymin = Score - SD, ymax = Score + SD), width = 0.2) +  
+    labs(
+      title = intervention,
+      x = "Timepoint",
+      y = "Mean Score"
+    ) +
+    theme_minimal() +
+    theme(legend.position = "none")  
+  
+
+  print(p)
+}
+
