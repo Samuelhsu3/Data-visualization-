@@ -1,0 +1,28 @@
+library(ggplot2)
+
+data_mindfulness <- data.frame(
+  Timepoint = rep(c("Pre", "Post", "Follow-up"), times = 3),
+  InjuryType = rep(c("Stroke", "Concussion", "Mod-Sev TBI"), each = 3),
+  Score = c(17, 16, 16.2,  
+            23, 19, 18,  
+            18.5, 17, 16.5)  
+)
+
+data_mindfulness$Timepoint <- factor(data_mindfulness$Timepoint, levels = c("Pre", "Post", "Follow-up"))
+
+p <- ggplot(data_mindfulness, aes(x = Timepoint, y = Score, group = InjuryType, color = InjuryType)) +
+  geom_line(size = 1) +  
+  geom_point(size = 3) +  
+  labs(
+    title = "Mindfulness Scores by Injury Type",
+    x = "Visit",
+    y = "Estimated Mean Level",
+    color = "Injury Type"
+  ) +
+  theme_minimal() +
+  scale_y_continuous(breaks = seq(15, 30, by = 5)) +
+  theme(
+    aspect.ratio = 1  
+  )
+
+print(p)
