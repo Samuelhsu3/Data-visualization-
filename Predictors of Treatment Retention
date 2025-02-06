@@ -1,0 +1,51 @@
+library(ggplot2)
+
+
+data_emotional <- data.frame(
+  Timepoint = rep(c("Pre", "Post", "Follow-up"), times = 2),
+  SymptomBurden = rep(c("High", "Low"), each = 3),
+  Score = c(22, 15, 10,  # High ES
+            30, 26, 30),  # Low ES
+  SD = rep(5, 6)  # Error bars 
+)
+
+p1 <- ggplot(data_emotional, aes(x = factor(Timepoint, levels = c("Pre", "Post", "Follow-up")), y = Score, 
+                                 group = SymptomBurden, color = SymptomBurden)) +
+  geom_line(size = 1) +       
+  geom_point(size = 3) +        
+  geom_errorbar(aes(ymin = Score - SD, ymax = Score + SD), width = 0.2) +  
+  labs(
+    title = "Emotional Symptom Burden (CBT)",
+    x = "Timepoint",
+    y = "Mean DASS Score"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_y_continuous(breaks = seq(0, 40, by = 10))  
+
+print(p1)
+
+
+
+data_cognitive <- data.frame(
+  Timepoint = rep(c("Pre", "Post", "Follow-up"), times = 2),
+  SymptomBurden = rep(c("High", "Low"), each = 3),
+  Score = c(60, 55, 49,  # High CS
+            65, 59, 60)   # Low CS
+)
+
+p2 <- ggplot(data_cognitive, aes(x = factor(Timepoint, levels = c("Pre", "Post", "Follow-up")), y = Score, 
+                                 group = SymptomBurden, color = SymptomBurden)) +
+  geom_line(size = 1) +      
+  geom_point(size = 3) +         
+  labs(
+    title = "Cognitive Symptom Burden (GMT)",
+    x = "Timepoint",
+    y = "Mean CFQ Score"
+  ) +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  scale_y_continuous(breaks = seq(45, 70, by = 5)) 
+
+print(p2)
+
